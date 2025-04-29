@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameStore - Категории</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1c1c1c;
+            color: #ffffff;
+        }
+        nav {
+            background-color: #2a2a2a;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo a {
+            color: #bb86fc;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            color: #cccccc;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #bb86fc;
+            font-weight: bold;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            min-width: 150px;
+            z-index: 100;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #cccccc;
+        }
+        .dropdown-menu a:hover, .dropdown-menu a.active {
+            background-color: #444;
+            color: #bb86fc;
+        }
+        .hero {
+            background: linear-gradient(135deg, #4b0082, #1e003e);
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .section h2 {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .category-card {
+            background-color: #2a2a2a;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .category-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .category-card p {
+            font-size: 14px;
+            color: #cccccc;
+        }
+        footer {
+            background-color: #2a2a2a;
+            padding: 20px;
+            text-align: center;
+        }
+        footer p {
+            margin: 0 0 10px;
+            color: #cccccc;
+        }
+        footer a {
+            color: #bb86fc;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'info_view' %}">GameStore</a>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'info_view' %}">Главная</a>
+                <div class="dropdown">
+                    <a href="{% url 'about' %}">О компании</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'contacts' %}">Контакты</a>
+                        <a href="{% url 'find_us' %}">Как нас найти</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="{% url 'products' %}">Товары</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'categories' %}" class="active">Категории</a>
+                        <a href="{% url 'all_products' %}">Все товары</a>
+                    </div>
+                </div>
+                <a href="{% url 'cart' %}">Корзина</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Категории игр</h1>
+        <p>Выберите жанр, который вам по душе!</p>
+    </section>
+
+    <section class="section">
+        <h2>Все категории</h2>
+        <div class="categories-grid">
+            <div class="category-card">
+                <h3>Экшен</h3>
+                <p>Динамичные игры с интенсивным геймплеем.</p>
+            </div>
+            <div class="category-card">
+                <h3>RPG</h3>
+                <p>Ролевые игры с глубокими сюжетами.</p>
+            </div>
+            <div class="category-card">
+                <h3>Стратегии</h3>
+                <p>Игры, где важна тактика и планирование.</p>
+            </div>
+            <div class="category-card">
+                <h3>Симуляторы</h3>
+                <p>Реалистичные симуляции для всех.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 GameStore. Все права защищены.</p>
+        <div>
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">Steam</a>
+        </div>
+    </footer>
+</body>
+</html>
