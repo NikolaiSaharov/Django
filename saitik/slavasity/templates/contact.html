@@ -7,7 +7,7 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background-color: #1c1c1c;
             color: #ffffff;
         }
@@ -28,6 +28,10 @@
             font-size: 24px;
             font-weight: bold;
             text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .logo a:hover {
+            color: #9f4ce6;
         }
         .nav-links {
             display: flex;
@@ -38,6 +42,7 @@
             text-decoration: none;
             font-size: 16px;
             padding: 8px 12px;
+            transition: color 0.3s ease, font-weight 0.3s ease;
         }
         .nav-links a:hover, .nav-links a.active {
             color: #bb86fc;
@@ -56,6 +61,7 @@
             border-radius: 4px;
             min-width: 150px;
             z-index: 100;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         .dropdown:hover .dropdown-menu {
             display: block;
@@ -64,6 +70,7 @@
             display: block;
             padding: 10px 15px;
             color: #cccccc;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .dropdown-menu a:hover, .dropdown-menu a.active {
             background-color: #444;
@@ -77,10 +84,12 @@
         .hero h1 {
             font-size: 36px;
             margin-bottom: 20px;
+            color: #ffffff;
         }
         .hero p {
             font-size: 18px;
             margin-bottom: 30px;
+            color: #cccccc;
         }
         .section {
             max-width: 1200px;
@@ -91,6 +100,7 @@
             font-size: 28px;
             text-align: center;
             margin-bottom: 30px;
+            color: #bb86fc;
         }
         .contact-grid {
             display: grid;
@@ -103,6 +113,7 @@
         .contact-info h3 {
             font-size: 20px;
             margin-bottom: 15px;
+            color: #ffffff;
         }
         .contact-info p {
             font-size: 16px;
@@ -118,6 +129,7 @@
             color: #bb86fc;
             text-decoration: none;
             font-size: 24px;
+            transition: color 0.3s ease;
         }
         .social-links a:hover {
             color: #9f4ce6;
@@ -141,9 +153,10 @@
             color: #bb86fc;
             margin: 0 10px;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
         footer a:hover {
-            text-decoration: underline;
+            color: #9f4ce6;
         }
         @media (max-width: 768px) {
             .nav-links {
@@ -176,22 +189,35 @@
                 <a href="{% url 'info_view' %}">GameStore</a>
             </div>
             <div class="nav-links">
-                <a href="{% url 'info_view' %}">Главная</a>
+                <a href="{% url 'info_view' %}" {% if request.path == '/info/' %}class="active"{% endif %}>Главная</a>
                 <div class="dropdown">
-                    <a href="{% url 'about' %}">О компании</a>
+                    <a href="{% url 'about' %}" {% if request.path == '/about/' %}class="active"{% endif %}>О компании</a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'contacts' %}" class="active">Контакты</a>
-                        <a href="{% url 'find_us' %}">Как нас найти</a>
+                        <a href="{% url 'contacts' %}" {% if request.path == '/contacts/' %}class="active"{% endif %}>Контакты</a>
+                        <a href="{% url 'find_us' %}" {% if request.path == '/find-us/' %}class="active"{% endif %}>Как нас найти</a>
                     </div>
                 </div>
                 <div class="dropdown">
-                    <a href="{% url 'products' %}">Товары</a>
+                    <a href="{% url 'products' %}" {% if request.path == '/products/' %}class="active"{% endif %}>Товары</a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'categories' %}">Категории</a>
-                        <a href="{% url 'all_products' %}">Все товары</a>
+                        <a href="{% url 'categories' %}" {% if request.path == '/categories/' %}class="active"{% endif %}>Категории</a>
+                        <a href="{% url 'all_products' %}" {% if request.path == '/all-products/' %}class="active"{% endif %}>Все товары</a>
                     </div>
                 </div>
-                <a href="{% url 'cart' %}">Корзина</a>
+                <div class="dropdown">
+                    <a href="#">Дополнительно</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'games_list' %}" {% if request.path == '/games/' %}class="active"{% endif %}>Игры</a>
+                        <a href="{% url 'category_list' %}" {% if request.path == '/category/' %}class="active"{% endif %}>Категории</a>
+                        <a href="{% url 'platform_list' %}" {% if request.path == '/platform/' %}class="active"{% endif %}>Платформы</a>
+                        <a href="{% url 'developer_list' %}" {% if request.path == '/developer/' %}class="active"{% endif %}>Разработчики</a>
+                        <a href="{% url 'publisher_list' %}" {% if request.path == '/publisher/' %}class="active"{% endif %}>Издатели</a>
+                        <a href="{% url 'review_list' %}" {% if request.path == '/review/' %}class="active"{% endif %}>Отзывы</a>
+                        <a href="{% url 'order_list' %}" {% if request.path == '/order/' %}class="active"{% endif %}>Заказы</a>
+                        <a href="{% url 'userprofile_list' %}" {% if request.path == '/userprofile/' %}class="active"{% endif %}>Профили</a>
+                    </div>
+                </div>
+                <a href="{% url 'cart' %}" {% if request.path == '/cart/' %}class="active"{% endif %}>Корзина</a>
             </div>
         </div>
     </nav>
@@ -214,7 +240,9 @@
                     <a href="#">🕒</a>
                 </div>
             </div>
-            
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2245.335!2d37.615!3d55.753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z0JzQvtGB0LrQstCw!5e0!3m2!1sru!2sru!4v1697654321" allowfullscreen="" loading="lazy"></iframe>
+            </div>
         </div>
     </section>
 

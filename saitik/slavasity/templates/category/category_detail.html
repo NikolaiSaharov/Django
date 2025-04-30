@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameStore - {{ category.name }}</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #1c1c1c;
+            color: #ffffff;
+        }
+        nav {
+            background-color: #2a2a2a;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo a {
+            color: #bb86fc;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            color: #cccccc;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #bb86fc;
+            font-weight: bold;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            min-width: 150px;
+            z-index: 100;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #cccccc;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown-menu a:hover, .dropdown-menu a.active {
+            background-color: #444;
+            color: #bb86fc;
+        }
+        .section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .section h2 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #bb86fc;
+        }
+        .category-info {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .category-info p {
+            font-size: 16px;
+            color: #cccccc;
+            margin: 10px 0;
+        }
+        .category-info p strong {
+            color: #ffffff;
+        }
+        .action-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .action-links a {
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .action-links a.edit {
+            background-color: #03dac6;
+            color: #1c1c1c;
+        }
+        .action-links a.edit:hover {
+            background-color: #00c4b4;
+        }
+        .action-links a.delete {
+            background-color: #cf6679;
+            color: #1c1c1c;
+        }
+        .action-links a.delete:hover {
+            background-color: #b35667;
+        }
+        footer {
+            background-color: #2a2a2a;
+            padding: 20px;
+            text-align: center;
+        }
+        footer p {
+            margin: 0 0 10px;
+            color: #cccccc;
+        }
+        footer a {
+            color: #bb86fc;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: #9f4ce6;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'info_view' %}">GameStore</a>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'info_view' %}">Главная</a>
+                <div class="dropdown">
+                    <a href="{% url 'about' %}">О компании</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'contacts' %}">Контакты</a>
+                        <a href="{% url 'find_us' %}">Как нас найти</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="{% url 'products' %}">Товары</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'categories' %}">Категории</a>
+                        <a href="{% url 'all_products' %}">Все товары</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#">Дополнительно</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'games_list' %}" {% if request.path == '/games/' %}class="active"{% endif %}>Игры</a>
+                        <a href="{% url 'category_list' %}" {% if request.path == '/category/' %}class="active"{% endif %}>Категории</a>
+                        <a href="{% url 'platform_list' %}" {% if request.path == '/platform/' %}class="active"{% endif %}>Платформы</a>
+                        <a href="{% url 'developer_list' %}" {% if request.path == '/developer/' %}class="active"{% endif %}>Разработчики</a>
+                        <a href="{% url 'publisher_list' %}" {% if request.path == '/publisher/' %}class="active"{% endif %}>Издатели</a>
+                        <a href="{% url 'review_list' %}" {% if request.path == '/review/' %}class="active"{% endif %}>Отзывы</a>
+                    </div>
+                </div>
+                <a href="{% url 'cart' %}">Корзина</a>
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Детали категории -->
+    <section class="section">
+        <h2>{{ category.name }}</h2>
+        <div class="category-info">
+            <p><strong>Название:</strong> {{ category.name }}</p>
+            <div class="action-links">
+                <a href="{% url 'category_update' category.pk %}" class="edit">Редактировать</a>
+                <a href="{% url 'category_delete' category.pk %}" class="delete">Удалить</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <p>© 2025 GameStore. Все права защищены.</p>
+        <div>
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">Steam</a>
+        </div>
+    </footer>
+</body>
+</html>
