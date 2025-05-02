@@ -1,0 +1,36 @@
+<nav>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="{% url 'info_view' %}">GameStore</a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'info_view' %}">Главная</a>
+            <div class="dropdown">
+                <a href="{% url 'about' %}">О компании</a>
+                <div class="dropdown-menu">
+                    <a href="{% url 'contacts' %}">Контакты</a>
+                    <a href="{% url 'find_us' %}">Как нас найти</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="{% url 'products' %}">Товары</a>
+                <div class="dropdown-menu">
+                    <a href="{% url 'categories' %}">Категории</a>
+                    <a href="{% url 'all_products' %}">Все товары</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">Дополнительно</a>
+                <div class="dropdown-menu">
+                    <a href="{% url 'games_list' %}" {% if request.path == '/games/' %}class="active"{% endif %}>Игры</a>
+                    <a href="{% url 'category_list' %}" {% if request.path == '/category/' %}class="active"{% endif %}>Категории</a>
+                    <a href="{% url 'platform_list' %}" {% if request.path == '/platform/' %}class="active"{% endif %}>Платформы</a>
+                    <a href="{% url 'developer_list' %}" {% if request.path == '/developer/' %}class="active"{% endif %}>Разработчики</a>
+                    <a href="{% url 'publisher_list' %}" {% if request.path == '/publisher/' %}class="active"{% endif %}>Издатели</a>
+                    <a href="{% url 'review_list' %}" {% if request.path == '/review/' %}class="active"{% endif %}>Отзывы</a>
+                </div>
+            </div>
+            <a href="{% url 'cart' %}">Корзина</a>
+        </div>
+    </div>
+</nav>
