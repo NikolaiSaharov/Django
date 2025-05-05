@@ -36,7 +36,7 @@ class Game(models.Model):
     publisher = models.ForeignKey('Publisher', on_delete=models.SET_NULL, null=True, blank=True, related_name='games', verbose_name="Издатель")
     
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.description}" 
     
     class Meta:
         verbose_name = "Игра"
@@ -84,21 +84,43 @@ class Review(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name="Пользователь")
-    games = models.ManyToManyField(Game, related_name='orders', verbose_name="Игры")
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Общая стоимость")
+    games = models.ManyToManyField('Game', related_name='orders', verbose_name="Игры")
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Общая стоимость", default=0.00)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     status = models.CharField(max_length=MAX_LENGTH, choices=[
         ('pending', 'Ожидает'),
         ('completed', 'Завершен'),
         ('cancelled', 'Отменен')
     ], default='pending', verbose_name="Статус")
+    login_address = models.TextField(null=True, blank=True, verbose_name="Логин аккаунта получателя")
+    payment_method = models.CharField(max_length=MAX_LENGTH, choices=[
+        ('card', 'Кредитная карта'),
+        ('online', 'Онлайн-платёж')
+    ], default='online', verbose_name="Способ оплаты")
 
     def __str__(self):
-        return f"Заказ #{self.id} от {self.user.username}"
+        return f"Заказ #{self.pk} от {self.user.username}"
     
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
+
+class PosOrder(models.Model):
+    order = models.OneToOneField('Order', on_delete=models.CASCADE, related_name='pos_order', verbose_name="Заказ")
+    license_key = models.CharField(max_length=MAX_LENGTH, blank=True, null=True, verbose_name="Лицензионный ключ")
+    delivery_status = models.CharField(max_length=MAX_LENGTH, choices=[
+        ('processing', 'Обрабатывается'),
+        ('sent', 'Отправлен'),
+        ('delivered', 'Доставлен')
+    ], default='processing', verbose_name="Статус доставки")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    def __str__(self):
+        return f"Post-Order для заказа #{self.order.pk}"
+    
+    class Meta:
+        verbose_name = "Элементы заказа"
+        verbose_name_plural = "Элементы заказа"
 
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlist', verbose_name="Пользователь")

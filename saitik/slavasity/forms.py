@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class GameForm(forms.ModelForm):
     class Meta:
@@ -83,3 +84,32 @@ class WishlistForm(forms.ModelForm):
         widgets = {
             'game': forms.Select(attrs={'class': 'form-control'}),
         }
+
+class RegistrationForm(UserCreationForm):
+    username = forms.CharField(
+        label='Логин пользователя',
+        min_length=2,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    email = forms.EmailField(
+        label='Почта пользователя',
+        min_length=2,
+        widget=forms.EmailInput(attrs={'class': 'form-control'})  
+    )
+    password1 = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})  
+    )
+    password2 = forms.CharField(
+        label='Повторите пароль',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})  
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label='Логин пользователя', min_length=2,widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.PasswordInput()
+

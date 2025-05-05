@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_name %}
+Оформление заказа
+{% endblock %}
+
+{% block content %}
+    <section class="section list-section">
+        <h2>Оформление заказа</h2>
+        {% if korzina and korzina|length > 0 %}
+            <div class="games-grid">
+                {% for item in korzina %}
+                    <div class="game-card">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                        {% else %}
+                            <div style="width: 150px; height: 180px; background-color: #444; display: flex; align-items: center; justify-content: center; border-bottom: 2px solid #bb86fc;">
+                                <span style="color: #cccccc;">Нет изображения</span>
+                            </div>
+                        {% endif %}
+                        <div class="game-card-content">
+                            <h3>{{ item.product.title }}</h3>
+                            <div class="info">
+                                <span class="categories">Количество: {{ item.count }}</span>
+                                <span class="price">Цена: {{ item.total_price }} ₽</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="cart-summary" style="margin-top: 20px; text-align: right;">
+                <h3>Итого: {{ korzina.get_total }} ₽</h3>
+            </div>
+        {% else %}
+            <p style="text-align: center; color: #cccccc;">Ваша корзина пуста.</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="{% url 'products' %}" class="btn btn-primary">Вернуться к покупкам</a>
+            </div>
+        {% endif %}
+
+        <div class="order-form-container" style="margin-top: 20px; max-width: 500px; margin-left: auto; margin-right: auto;">
+            <h3>Введите данные для заказа</h3>
+            <form action="{% url 'korzina_buy' %}" method="post">
+                {% csrf_token %}
+                {% if form_order.errors %}
+                    <div class="errorlist">
+                        {% for error in form_order.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="{{ form_order.login_address.id_for_label }}">Логин получателя:</label>
+                    {{ form_order.login_address }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form_order.payment_method.id_for_label }}">Способ оплаты:</label>
+                    {{ form_order.payment_method }}
+                </div>
+                <button type="submit" class="btn btn-success" style="background-color: #bb86fc; border-color: #bb86fc;">Оформить заказ</button>
+                <a href="{% url 'korzina_detail' %}" class="btn btn-secondary" style="margin-left: 10px;">Назад</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #bb86fc;
+            outline: none;
+        }
+        .errorlist {
+            color: #cf6679;
+            font-size: 14px;
+            margin-bottom: 10px;
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+{% endblock %}

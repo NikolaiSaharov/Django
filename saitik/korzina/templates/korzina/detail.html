@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title_name %}
+Корзина
+{% endblock %}
+
+{% block content %}
+    <section class="section list-section">
+        <h2>Ваша корзина</h2>
+        {% if korzina %}
+            <div class="games-grid">
+                {% for item in korzina %}
+                    <div class="game-card">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                        {% else %}
+                            <div style="width: 150px; height: 180px; background-color: #444; display: flex; align-items: center; justify-content: center; border-bottom: 2px solid #bb86fc;">
+                                <span style="color: #cccccc;">Нет изображения</span>
+                            </div>
+                        {% endif %}
+                        <div class="game-card-content">
+                            <h3>{{ item.product.title }}</h3>
+                            <div class="info">
+                                <span class="categories">Количество: {{ item.count }}</span>
+                                <span class="price">Цена: {{ item.total_price }} ₽</span>
+                            </div>
+                            <div class="game-card-actions">
+                                <a href="{% url 'korzina_remove' product_id=item.product.id %}" class="btn btn-danger delete">
+                                    Удалить
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="cart-summary" style="margin-top: 20px; text-align: right;">
+                <h3>Итого: {{ korzina.get_total }} ₽</h3>
+                <div class="cart-actions" style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+                    <a href="{% url 'korzina_clear' %}" class="btn btn-warning clear">
+                        Очистить корзину
+                    </a>
+                    <a href="{% url 'open_order' %}" class="btn btn-success checkout">
+                        Оформить заказ
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <p style="text-align: center; color: #cccccc;">Ваша корзина пуста.</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="{% url 'all_products' %}" class="btn btn-primary shop">
+                    Вернуться к покупкам
+                </a>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

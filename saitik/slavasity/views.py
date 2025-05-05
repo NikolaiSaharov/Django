@@ -1,11 +1,16 @@
-from django.shortcuts import render
+from urllib import request
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import *
 from .forms import *
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from korzina.forms import KorzinaAddProductForm
+from django.contrib.auth import login, logout
+from django.views import View  # Добавлено для наследования
 
 def info_view(request):
-    return render(request, 'info.html')
+    games = Game.objects.all()[:3]  
+    return render(request, 'info.html', {'games': games})
 
 def about_view(request):
     return render(request, 'about.html')
@@ -16,14 +21,25 @@ def contact_view(request):
 def find_us_view(request):
     return render(request, 'find_us.html')
 
-def products_view(request):
-    return render(request, 'products.html')
+class ProductsView(ListView):
+    model = Category
+    template_name = 'products.html'
+    context_object_name = 'categories'
 
-def categories_view(request):
-    return render(request, 'categories.html')
+class CategoriesView(ListView):
+    model = Category
+    template_name = 'categories.html'
+    context_object_name = 'categories'
 
-def all_products_view(request):
-    return render(request, 'all_products.html')
+class AllProductsView(ListView):
+    model = Game
+    template_name = 'all_products.html'
+    context_object_name = 'games'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = KorzinaAddProductForm()
+        return context
 
 def cart_view(request):
     return render(request, 'cart.html')
@@ -267,3 +283,43 @@ class WishlistDeleteView(DeleteView):
     template_name = 'wishlist/wishlist_delete.html'
     context_object_name = 'wishlist'
     success_url = reverse_lazy('wishlist_list')
+
+class login_user(View):
+    def post(self, request):
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            if request.GET.get('next'):
+                return redirect(request.GET.get('next'))
+            return redirect('info_view')
+        else:
+            form = LoginForm()
+            context = {'form': form}
+            return render(request, 'auth/login.html', context)
+
+    def get(self, request):
+        form = LoginForm()
+        context = {'form': form}
+        return render(request, 'auth/login.html', context)
+
+class register_user(View):
+    def post(self, request):
+        form = RegistrationForm(data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            if request.GET.get('next'):
+                return redirect(request.GET.get('next'))
+            return redirect('info_view')
+        else:
+            context = {'form': form}
+            return render(request, 'auth/register.html', context)
+
+    def get(self, request):
+        form = RegistrationForm()
+        context = {'form': form}
+        return render(request, 'auth/register.html', context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('info_view')

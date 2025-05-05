@@ -19,18 +19,26 @@
                     <a href="{% url 'all_products' %}">Все товары</a>
                 </div>
             </div>
-            <div class="dropdown">
-                <a href="#">Дополнительно</a>
-                <div class="dropdown-menu">
-                    <a href="{% url 'games_list' %}" {% if request.path == '/games/' %}class="active"{% endif %}>Игры</a>
-                    <a href="{% url 'category_list' %}" {% if request.path == '/category/' %}class="active"{% endif %}>Категории</a>
-                    <a href="{% url 'platform_list' %}" {% if request.path == '/platform/' %}class="active"{% endif %}>Платформы</a>
-                    <a href="{% url 'developer_list' %}" {% if request.path == '/developer/' %}class="active"{% endif %}>Разработчики</a>
-                    <a href="{% url 'publisher_list' %}" {% if request.path == '/publisher/' %}class="active"{% endif %}>Издатели</a>
-                    <a href="{% url 'review_list' %}" {% if request.path == '/review/' %}class="active"{% endif %}>Отзывы</a>
+            {% if user.is_authenticated and user.is_superuser %}
+                <div class="dropdown">
+                    <a href="#">Дополнительно</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'games_list' %}" {% if request.path == '/games/' %}class="active"{% endif %}>Игры</a>
+                        <a href="{% url 'category_list' %}" {% if request.path == '/category/' %}class="active"{% endif %}>Категории</a>
+                        <a href="{% url 'platform_list' %}" {% if request.path == '/platform/' %}class="active"{% endif %}>Платформы</a>
+                        <a href="{% url 'developer_list' %}" {% if request.path == '/developer/' %}class="active"{% endif %}>Разработчики</a>
+                        <a href="{% url 'publisher_list' %}" {% if request.path == '/publisher/' %}class="active"{% endif %}>Издатели</a>
+                        <a href="{% url 'review_list' %}" {% if request.path == '/review/' %}class="active"{% endif %}>Отзывы</a>
+                    </div>
                 </div>
-            </div>
-            <a href="{% url 'cart' %}">Корзина</a>
+            {% endif %}
+            <a href="{% url 'korzina_detail' %}">Корзина</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout_user' %}" class="auth-link">Выход</a>
+            {% else %}
+                <a href="{% url 'login_user' %}" class="auth-link">Авторизация</a>
+                <a href="{% url 'register_user' %}" class="auth-link">Регистрация</a>
+            {% endif %}
         </div>
     </div>
 </nav>

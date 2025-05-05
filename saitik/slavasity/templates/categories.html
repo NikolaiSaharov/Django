@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Категории
@@ -14,22 +15,16 @@
     <section class="section list-section">
         <h2>Все категории</h2>
         <div class="category-grid">
+            {% for category in categories %}
             <div class="category-card">
-                <h3>Экшен</h3>
-                <p>Динамичные игры с интенсивным геймплеем.</p>
+                <h3>{{ category.name }}</h3>
+                {% if category.description %}
+                    <p>{{ category.description }}</p>
+                {% endif %}
             </div>
-            <div class="category-card">
-                <h3>RPG</h3>
-                <p>Ролевые игры с глубокими сюжетами.</p>
-            </div>
-            <div class="category-card">
-                <h3>Стратегии</h3>
-                <p>Игры, где важна тактика и планирование.</p>
-            </div>
-            <div class="category-card">
-                <h3>Симуляторы</h3>
-                <p>Реалистичные симуляции для всех.</p>
-            </div>
+            {% empty %}
+            <p style="text-align: center; color: #cccccc;">Категории отсутствуют.</p>
+            {% endfor %}
         </div>
     </section>
 {% endblock %}

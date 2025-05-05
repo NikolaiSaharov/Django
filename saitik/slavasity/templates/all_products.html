@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Все товары
@@ -14,45 +15,33 @@
     <section class="section list-section">
         <h2>Игры в наличии</h2>
         <div class="games-grid">
+            {% for game in games %}
             <div class="game-card">
-                <img src="https://via.placeholder.com/150" alt="Game 1">
+                {% if game.image %}
+                    <img src="{{ game.image.url }}" alt="{{ game.title }}">
+                {% else %}
+                    <div style="width: 100%; height: 180px; background-color: #444; display: flex; align-items: center; justify-content: center; border-bottom: 2px solid #bb86fc;">
+                        <span style="color: #cccccc;">Нет изображения</span>
+                    </div>
+                {% endif %}
                 <div class="game-card-content">
-                    <h3>Игра 1</h3>
+                    <h3>{{ game.title }}</h3>
                     <div class="info">
-                        <span class="categories">Экшен, приключение</span>
-                        <span class="price">1999 ₽</span>
+                        <span class="categories">{{ game.categories.all|join:", " }}</span>
+                        <span class="price">{{ game.price }} ₽</span>
                     </div>
                     <div class="game-card-actions">
-                        <a href="{% url 'cart' %}">В корзину</a>
+                        <form action="{% url 'korzina_add' product_id=game.id %}" method="post">
+                            {% csrf_token %}
+                            {{ form }}  
+                            <button type="submit" class="btn" style="background-color: #bb86fc; border-color: #bb86fc; color: white;">В корзину</button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="game-card">
-                <img src="https://via.placeholder.com/150" alt="Game 2">
-                <div class="game-card-content">
-                    <h3>Игра 2</h3>
-                    <div class="info">
-                        <span class="categories">Шутер, кооператив</span>
-                        <span class="price">2499 ₽</span>
-                    </div>
-                    <div class="game-card-actions">
-                        <a href="{% url 'cart' %}">В корзину</a>
-                    </div>
-                </div>
-            </div>
-            <div class="game-card">
-                <img src="https://via.placeholder.com/150" alt="Game 3">
-                <div class="game-card-content">
-                    <h3>Игра 3</h3>
-                    <div class="info">
-                        <span class="categories">Стратегия</span>
-                        <span class="price">1799 ₽</span>
-                    </div>
-                    <div class="game-card-actions">
-                        <a href="{% url 'cart' %}">В корзину</a>
-                    </div>
-                </div>
-            </div>
+            {% empty %}
+            <p style="text-align: center; color: #cccccc;">Игр пока нет.</p>
+            {% endfor %}
         </div>
     </section>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Товары
@@ -14,27 +15,19 @@
     <section class="section list-section">
         <h2>Популярные категории</h2>
         <div class="category-grid">
+            {% for category in categories %}
             <div class="category-card">
-                <h3>Экшен</h3>
-                <p>Адреналиновые приключения.</p>
+                <h3>{{ category.name }}</h3>
+                {% if category.description %}
+                    <p>{{ category.description }}</p>
+                {% endif %}
                 <div class="category-card-actions">
                     <a href="{% url 'categories' %}" class="detail">Перейти</a>
                 </div>
             </div>
-            <div class="category-card">
-                <h3>RPG</h3>
-                <p>Глубокие сюжеты и эпичные миры.</p>
-                <div class="category-card-actions">
-                    <a href="{% url 'categories' %}" class="detail">Перейти</a>
-                </div>
-            </div>
-            <div class="category-card">
-                <h3>Стратегии</h3>
-                <p>Тактика и управление.</p>
-                <div class="category-card-actions">
-                    <a href="{% url 'categories' %}" class="detail">Перейти</a>
-                </div>
-            </div>
+            {% empty %}
+            <p style="text-align: center; color: #cccccc;">Категории отсутствуют.</p>
+            {% endfor %}
         </div>
     </section>
 {% endblock %}

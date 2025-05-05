@@ -1,63 +1,60 @@
-from django.urls import path
+from django.urls import include, path
 from .views import *
 
+
 urlpatterns = [
-    path('info', info_view, name='info_view'),
+    path('info/', info_view, name='info_view'), 
     path('about/', about_view, name='about'),
     path('about/contacts/', contact_view, name='contacts'),
     path('about/find-us/', find_us_view, name='find_us'),
-    path('products/', products_view, name='products'),
-    path('products/categories/', categories_view, name='categories'),
-    path('products/all/', all_products_view, name='all_products'),
+    path('products/', ProductsView.as_view(), name='products'),  
+    path('products/categories/', CategoriesView.as_view(), name='categories'),  
+    path('products/all/', AllProductsView.as_view(), name='all_products'),  
     path('cart/', cart_view, name='cart'),
     path('games/', GamesListView.as_view(), name='games_list'),
     path('games/<int:pk>/', GamesDetailView.as_view(), name='games_detail'),
     path('games/create/', GamesCreateView.as_view(), name='games_create'),
     path('games/<int:pk>/update/', GamesUpdateView.as_view(), name='games_update'),
     path('games/<int:pk>/delete/', GamesDeleteView.as_view(), name='games_delete'),
-
     path('categories/', CategoriesListView.as_view(), name='category_list'),
     path('categories/<int:pk>/', CategoryDetailView.as_view(), name='category_detail'),
     path('categories/create/', CategoryCreateView.as_view(), name='category_create'),
     path('categories/<int:pk>/update/', CategoryUpdateView.as_view(), name='category_update'),
     path('categories/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category_delete'),
-
     path('platforms/', PlatformsListView.as_view(), name='platform_list'),
     path('platforms/<int:pk>/', PlatformDetailView.as_view(), name='platform_detail'),
     path('platforms/create/', PlatformCreateView.as_view(), name='platform_create'),
     path('platforms/<int:pk>/update/', PlatformUpdateView.as_view(), name='platform_update'),
     path('platforms/<int:pk>/delete/', PlatformDeleteView.as_view(), name='platform_delete'),
-
     path('developers/', DevelopersListView.as_view(), name='developer_list'),
     path('developers/<int:pk>/', DeveloperDetailView.as_view(), name='developer_detail'),
     path('developers/create/', DeveloperCreateView.as_view(), name='developer_create'),
     path('developers/<int:pk>/update/', DeveloperUpdateView.as_view(), name='developer_update'),
     path('developers/<int:pk>/delete/', DeveloperDeleteView.as_view(), name='developer_delete'),
-    
     path('publishers/', PublishersListView.as_view(), name='publisher_list'),
     path('publishers/<int:pk>/', PublisherDetailView.as_view(), name='publisher_detail'),
     path('publishers/create/', PublisherCreateView.as_view(), name='publisher_create'),
     path('publishers/<int:pk>/update/', PublisherUpdateView.as_view(), name='publisher_update'),
     path('publishers/<int:pk>/delete/', PublisherDeleteView.as_view(), name='publisher_delete'),
-    
     path('reviews/', ReviewsListView.as_view(), name='review_list'),
     path('reviews/<int:pk>/', ReviewDetailView.as_view(), name='review_detail'),
     path('reviews/create/', ReviewCreateView.as_view(), name='review_create'),
     path('reviews/<int:pk>/update/', ReviewUpdateView.as_view(), name='review_update'),
     path('reviews/<int:pk>/delete/', ReviewDeleteView.as_view(), name='review_delete'),
-    
     path('orders/', OrdersListView.as_view(), name='order_list'),
     path('orders/<int:pk>/', OrderDetailView.as_view(), name='order_detail'),
     path('orders/create/', OrderCreateView.as_view(), name='order_create'),
     path('orders/<int:pk>/update/', OrderUpdateView.as_view(), name='order_update'),
     path('orders/<int:pk>/delete/', OrderDeleteView.as_view(), name='order_delete'),
-    
     path('wishlists/', WishlistsListView.as_view(), name='wishlist_list'),
     path('wishlists/<int:pk>/', WishlistDetailView.as_view(), name='wishlist_detail'),
     path('wishlists/create/', WishlistCreateView.as_view(), name='wishlist_create'),
     path('wishlists/<int:pk>/update/', WishlistUpdateView.as_view(), name='wishlist_update'),
     path('wishlists/<int:pk>/delete/', WishlistDeleteView.as_view(), name='wishlist_delete'),
 
+    path('korzina/', include('korzina.urls')),
 
-
+    path('login/', login_user.as_view(), name='login_user'),    
+    path('register/', register_user.as_view(), name='register_user'),  
+    path('logout/', logout_user, name='logout_user'),
 ]
