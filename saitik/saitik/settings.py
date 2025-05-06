@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'slavasity.apps.SlavasityConfig',
-    'korzina'
+    'korzina',
+    'api',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
